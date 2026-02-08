@@ -1,15 +1,17 @@
 **Overview**
 
-Customer churn is one of the biggest challenges for subscription-based and service businesses.
-This project builds a predictive model that:
+Customer churn is a major challenge for telecom companies, where acquiring new customers is significantly more expensive than retaining existing ones.
+This project builds a machine learning–based churn prediction system that not only predicts whether a customer will churn, but also provides:
 
-1. Identifies customers likely to churn
+1. Churn probability
 
-2. Assigns churn probabilities
+2. Risk segmentation
 
-3. Suggests personalized retention strategies
+3. Key churn drivers
 
-4. The system is deployed as a web application for real-time predictions.
+4. Recommended retention campaigns
+
+The goal is to transform raw customer data into actionable business insights that support targeted retention strategies.
 
 
 **Machine Learning Pipeline**
@@ -50,7 +52,44 @@ This project builds a predictive model that:
 
 
 
+**Dataset**
 
+Dataset: Telco Customer Churn dataset
+
+Domain: Telecommunications
+
+Target Variable: Churn (Yes/No)
+
+
+
+**Key Features:**
+
+Customer tenure
+
+Contract type
+
+Monthly charges
+
+Internet service type
+
+Payment method
+
+Add-on services
+
+
+** Exploratory Data Analysis (EDA)**
+
+EDA was performed to understand churn behavior and feature relationships.
+
+Key Insights:
+
+1. Customers on month-to-month contracts show higher churn rates.
+
+2. Low-tenure customers are more likely to churn.
+
+3. Higher monthly charges correlate with increased churn risk.
+
+4. Customers without add-on services tend to churn more.
 
 
 
