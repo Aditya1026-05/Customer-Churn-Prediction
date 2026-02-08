@@ -39,7 +39,14 @@ This project builds a predictive model that:
 
 
 
+**Retention Strategy**
 
+
+| Churn Probability | Risk Level | Strategy                    |
+| ----------------- | ---------- | --------------------------- |
+| < 0.3             | Low        | Loyalty rewards             |
+| 0.3 – 0.7         | Medium     | Personalized offers         |
+| > 0.7             | High       | Discount + priority support |
 
 
 
