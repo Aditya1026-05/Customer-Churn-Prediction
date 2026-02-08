@@ -77,7 +77,7 @@ Payment method
 Add-on services
 
 
-** Exploratory Data Analysis (EDA)**
+**Exploratory Data Analysis (EDA)**
 
 EDA was performed to understand churn behavior and feature relationships.
 
