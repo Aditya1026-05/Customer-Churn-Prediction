@@ -4,7 +4,7 @@ import pickle
 
 # ------------------ Page Config ------------------
 st.set_page_config(page_title="Customer Churn Prediction", layout="centered")
-st.title("📉 Customer Churn Prediction")
+st.title("Customer Churn Prediction")
 st.write("Enter customer details to predict churn probability")
 
 # ------------------ Load Model & Reference Data ------------------
@@ -110,19 +110,19 @@ if st.button("Predict Churn"):
 
     # ------------------ Output ------------------
     if prediction == 1:
-        st.error("🚨 This customer is likely to churn")
+        st.error("This customer is likely to churn")
     else:
-        st.success("✅ This customer is likely to stay")
+        st.success("This customer is likely to stay")
 
     st.write(f"**Probability:** {round(probability * 100, 2)}%")
 
     # ------------------ Risk Segmentation ------------------
     if probability < 0.30:
-        st.success("🟢 Risk : Low Risk")
+        st.success("Risk : Low Risk")
     elif probability < 0.60:
-        st.warning("🟡 Risk : Medium Risk")
+        st.warning("Risk : Medium Risk")
     else:
-        st.error("🔴 Risk : High Risk")
+        st.error("Risk : High Risk")
 
     # ------------------ Churn Reasons ------------------
     reasons = []
