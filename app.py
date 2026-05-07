@@ -114,7 +114,7 @@ if st.button("Predict Churn"):
     else:
         st.success("✅ This customer is likely to stay")
 
-    st.write(f"**Confidence:** {round(probability * 100, 2)}%")
+    st.write(f"**Probability to Leave:** {round(probability * 100, 2)}%")
 
     # ------------------ Risk Segmentation ------------------
     if probability < 0.30:
