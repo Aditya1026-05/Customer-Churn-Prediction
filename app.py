@@ -33,6 +33,7 @@ StreamingTV = st.selectbox("Streaming TV", ["Yes", "No", "No internet service"])
 StreamingMovies = st.selectbox("Streaming Movies", ["Yes", "No", "No internet service"])
 Contract = st.selectbox("Contract", ["Month-to-month", "One year", "Two year"])
 PaperlessBilling = st.selectbox("Paperless Billing", ["Yes", "No"])
+
 PaymentMethod = st.selectbox(
     "Payment Method",
     [
@@ -42,6 +43,7 @@ PaymentMethod = st.selectbox(
         "Credit card (automatic)"
     ]
 )
+
 tenure = st.number_input("Tenure (months)", min_value=0)
 
 # ------------------ Prediction ------------------
@@ -68,11 +70,19 @@ if st.button("Predict Churn"):
     df_2 = pd.concat([df_1, new_df], ignore_index=True)
 
     # Ensure numeric columns
-    df_2['TotalCharges'] = pd.to_numeric(df_2['TotalCharges'], errors='coerce')
-    df_2['MonthlyCharges'] = pd.to_numeric(df_2['MonthlyCharges'], errors='coerce')
+    df_2['TotalCharges'] = pd.to_numeric(
+        df_2['TotalCharges'],
+        errors='coerce'
+    )
+
+    df_2['MonthlyCharges'] = pd.to_numeric(
+        df_2['MonthlyCharges'],
+        errors='coerce'
+    )
 
     # Tenure grouping
     labels = [f"{i} - {i+11}" for i in range(1, 72, 12)]
+
     df_2['tenure_group'] = pd.cut(
         df_2['tenure'].astype(int),
         range(1, 80, 12),
@@ -94,37 +104,71 @@ if st.button("Predict Churn"):
 
     num_cols = ['MonthlyCharges', 'TotalCharges']
 
-    df_cat = pd.get_dummies(df_2[cat_cols], drop_first=False)
-    df_final = pd.concat([df_cat, df_2[num_cols]], axis=1)
+    df_cat = pd.get_dummies(
+        df_2[cat_cols],
+        drop_first=False
+    )
+
+    df_final = pd.concat(
+        [df_cat, df_2[num_cols]],
+        axis=1
+    )
 
     # Align EXACTLY with training features
     df_final = df_final.loc[:, ~df_final.columns.duplicated()]
-    df_final = df_final.reindex(columns=model.feature_names_in_, fill_value=0)
 
-    # Convert all to numeric (fix XGBoost error)
+    df_final = df_final.reindex(
+        columns=model.feature_names_in_,
+        fill_value=0
+    )
+
+    # Convert all to numeric
     df_final = df_final.astype(float)
 
-    # Prediction
+    # ------------------ Prediction ------------------
+
     prediction = model.predict(df_final.tail(1))[0]
-    probability = model.predict_proba(df_final.tail(1))[0][1]
+
+    probabilities = model.predict_proba(df_final.tail(1))[0]
+
+    stay_probability = probabilities[0]
+
+    churn_probability = probabilities[1]
 
     # ------------------ Output ------------------
+
     if prediction == 1:
+
         st.error("This customer is likely to churn")
+
+        display_probability = churn_probability
+
     else:
+
         st.success("This customer is likely to stay")
 
-    st.write(f"**Probability:** {round(probability * 100, 2)}%")
+        display_probability = stay_probability
+
+    st.write(
+        f"**Probability:** {round(display_probability * 100, 2)}%"
+    )
 
     # ------------------ Risk Segmentation ------------------
-    if probability < 0.30:
+
+    if churn_probability < 0.30:
+
         st.success("Risk : Low Risk")
-    elif probability < 0.60:
+
+    elif churn_probability < 0.60:
+
         st.warning("Risk : Medium Risk")
+
     else:
+
         st.error("Risk : High Risk")
 
     # ------------------ Churn Reasons ------------------
+
     reasons = []
 
     if Contract == "Month-to-month":
@@ -146,10 +190,12 @@ if st.button("Predict Churn"):
         reasons.append("General usage and contract patterns")
 
     st.subheader("Possible Reasons for Churn")
+
     for r in reasons[:3]:
         st.write(f"- {r}")
 
     # ------------------ Retention Campaign Suggestions ------------------
+
     campaigns = []
 
     if Contract == "Month-to-month":
@@ -168,6 +214,6 @@ if st.button("Predict Churn"):
         campaigns.append("Offer loyalty reward or referral bonus")
 
     st.subheader("Recommended Retention Actions")
+
     for c in campaigns[:3]:
         st.write(f"- {c}")
-
